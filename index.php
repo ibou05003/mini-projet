@@ -7,14 +7,14 @@
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- css -->
-
+    <link rel="stylesheet" href="css/style.css">
     <title>Connexion</title>
 </head>
-<body>
+<body class="fondGris">
     <div class="container">
-        <div class="row align-middle">
+        <div class="row">
             <div class="offset-md-3 col-md-6">
-                <form action="" method="POST">
+                <form action="" method="POST" class="formulaire">
                     <div class="form-group">
                         <label for="login">Login</label>
                         <input type="text" class="form-control" id="login" name="login" placeholder="Entrer votre login">

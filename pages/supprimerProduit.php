@@ -7,11 +7,12 @@
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- css -->
+    <link rel="stylesheet" href="../css/style.css">
     <title>Suppression de Produit</title>
 </head>
 <body>
     <?php include_once 'header.php' ?>
-    <!-- Recherche de produits à partir du seuil -->
+    <div class="marge">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center"><h1>Rechercher Produit à Supprimer</h1></div>
@@ -128,6 +129,7 @@ for($i=0;$i<$ligne;$i++){
 echo '</tbody></table>';
 }
 ?>
+</div>
 </div>
     <?php include_once 'footer.php' ?>
 </body>

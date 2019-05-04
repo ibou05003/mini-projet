@@ -7,10 +7,12 @@
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- css -->
+    <link rel="stylesheet" href="../css/style.css">
     <title>Recherche des Produits</title>
 </head>
 <body>
     <?php include_once 'header.php' ?>
+    <div class="marge">
     <!-- Recherche de produits à partir du seuil -->
     <div class="container">
         <div class="row">
@@ -390,6 +392,7 @@
         }
     }
 ?>
+</div>
 </div>
     <?php include_once 'footer.php' ?>
 </body>
