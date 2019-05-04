@@ -84,13 +84,7 @@
         $nom=$_POST['nom'];
         //recherche
         for($i=0;$i<$ligne;$i++){
-            //$n=$i+1;
-            if($nom==$produit[$i][0]){
-                /*for($j=$i;$j<$ligne;$j++){
-                    for($k=0;$k<$col;$k++){
-                        $produit[$j][$k]=$produit[$j+1][$k];
-                    }
-                }*/
+            if(strcasecmp($nom,$produit[$i][0])==0){
                 array_splice($produit,$i,1);
                 $ligne--;
             }

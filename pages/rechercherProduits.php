@@ -343,6 +343,9 @@
     echo '</tbody></table>';
             
         }
+        elseif(empty($_POST['seuil']) && empty($_POST['pmin']) && empty($_POST['pmax'])){
+            echo 'vous n\'avez selectionné aucun critere de recherche';
+        }
         else{
             $seuil=$_POST['seuil'];
             $pmax=$_POST['pmax'];
