@@ -19,7 +19,7 @@
         </div>
         <div class="offset-md-3 col-12 col-md-6">
             <form class="form-inline my-2 my-lg-0" method="post" action="">
-                <input class="form-control mr-sm-2" type="text" required name="nom" placeholder="Entrer la nom du produit à modifier">
+                <input class="form-control mr-sm-2" type="text" required name="nom" placeholder="Nom produit à supprimer">
                 <button class="btn btn-outline-success my-2 my-sm-0" name="supprimer" type="submit" value="supprimer">Supprimer</button>
             </form>
         </div>
