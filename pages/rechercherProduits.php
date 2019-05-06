@@ -20,9 +20,9 @@
         </div>
         <div class="offset-md-1 col-12 col-md-10">
             <form class="form-inline my-2 my-lg-0" method="post" action="">
-                <input class="form-control mr-sm-2" type="number" min=1 name="seuil" placeholder="Entrer la quantité seuil">
-                <input class="form-control mr-sm-2" type="number" min=100 name="pmin" placeholder="Entrer le prix min">
-                <input class="form-control mr-sm-2" type="number" min=100 name="pmax" placeholder="Entrer le prix max">
+                <input class="form-control mr-sm-2" type="number" min=1 name="seuil" placeholder="Entrer la quantité seuil" <?php if(!empty($_POST['seuil'])){echo'value="'.$_POST['seuil'].'"';}?>>
+                <input class="form-control mr-sm-2" type="number" min=100 name="pmin" placeholder="Entrer le prix min" <?php if(!empty($_POST['pmin'])){echo'value="'.$_POST['pmin'].'"';}?>>
+                <input class="form-control mr-sm-2" type="number" min=100 name="pmax" placeholder="Entrer le prix max" <?php if(!empty($_POST['pmax'])){echo'value="'.$_POST['pmax'].'"';}?>>
                 <button class="btn btn-outline-success my-2 my-sm-0" name="rechercher" type="submit" value="rechercher">Rechercher</button>
             </form>
         </div>

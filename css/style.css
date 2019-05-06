@@ -1,16 +1,13 @@
 body{
     margin: 0px;
     padding: 0px;
-    background-image: url(../img/caddie.jpg);
+    /*background-image: url(../img/2.png);*/
 }
-.fondGris{
-    /*background-color: grey;*/
-    background-image: url(../img/caddie.jpg);
-}
+
 .formulaire{
     margin-top: 20vh;
     padding: 20px;
-    background-color: rgba(75, 243, 159, 0.932);
+    background-color: rgba(75, 243, 159, 0.178);
 }
 footer{
     color: whitesmoke;
