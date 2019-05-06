@@ -90,7 +90,7 @@
             $nom=$_POST['nom'];
             $qte=$_POST['quantite'];
             $prix=$_POST['prix'];
-            $mtt=$qte=$prix;
+            $mtt=$qte*$prix;
             $ligne=10;
             $col=4;
             $t=false;
