@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Update</title>
+    <!-- css -->
+    <title>Modification d'un Produit</title>
 </head>
 <body>
-<div class="container">
+    <?php include_once 'header.php' ?>
+    <!-- Recherche de produits à partir du seuil -->
+    <div class="container">
         <div class="row">
             <div class="col-12 text-center"><h1>Modifier un Produit</h1></div>
         </div>
@@ -16,21 +20,23 @@
             <form action="" method="POST">
                 <div class="form-group">
                     <label for="nom">Nom</label>
-                    <input type="text" name="nom" id="nom" placeholder="Entrer le nom du produit à modifier">
+                    <input type="text" required class="form-control" name="nom" id="nom" placeholder="Entrer le nom du produit à modifier">
                 </div>
                 <div class="form-group">
                     <label for="quantite">Quantité</label>
-                    <input type="number" min=1 name="quantite" id="quantite" placeholder="Entrer la quantité">
+                    <input type="number" min=1 required class="form-control" name="quantite" id="quantite" placeholder="Entrer la quantité">
                 </div>
                 <div class="form-group">
                     <label for="prix">Prix Unitaire</label>
-                    <input type="number" min=100 name="prix" id="prix" placeholder="Entrer le prix unitaire">
+                    <input type="number" min=100 required class="form-control" name="prix" id="prix" placeholder="Entrer le prix unitaire">
                 </div>
-                <button type="submit" value="modifier" name="modifier" class="btn btn-primary">
-
-
-                <?php
+                <button type="submit" value="modifier" name="modifier" class="btn btn-primary">Modifier</button>
+            </form>
+        </div>
     
+    
+    <?php
+    //recherche
     $produit=array(
         array('lait',50,1000,50*1000),
         array('savon',25,500,25*500),
@@ -61,7 +67,7 @@
                 }
             }
         if($trouve==false){
-           
+            //affichage
                 echo 'ce produit n\'existe pas';
         }
         else{
@@ -112,5 +118,6 @@
     }
 ?>
 </div>
+    <?php include_once 'footer.php' ?>
 </body>
 </html>
