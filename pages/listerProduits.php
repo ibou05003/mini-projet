@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="../css/style.css">
     <title>Document</title>
 </head>
 <body>
+<?php include_once 'header.php' ?>
+    <div class="marge">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center"><h1>Liste Produits</h1></div>
+        </div>
     <?php
         $produits = array(
             array('blouse', 10, 100, 10*100),
@@ -61,7 +68,8 @@
         ?>
         
 
-
-
+        </div>
+        </div>
+    <?php include_once 'footer.php' ?>
 </body>
 </html>
