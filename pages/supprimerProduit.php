@@ -7,18 +7,19 @@
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- css -->
+    <link rel="stylesheet" href="../css/style.css">
     <title>Suppression de Produit</title>
 </head>
 <body>
     <?php include_once 'header.php' ?>
-    <!-- Recherche de produits à partir du seuil -->
+    <div class="marge">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center"><h1>Rechercher Produit à Supprimer</h1></div>
         </div>
         <div class="offset-md-3 col-12 col-md-6">
             <form class="form-inline my-2 my-lg-0" method="post" action="">
-                <input class="form-control mr-sm-2" type="text" required name="nom" placeholder="Entrer la nom du produit à modifier">
+                <input class="form-control mr-sm-2" type="text" required name="nom" placeholder="Nom produit à supprimer">
                 <button class="btn btn-outline-success my-2 my-sm-0" name="supprimer" type="submit" value="supprimer">Supprimer</button>
             </form>
         </div>
@@ -84,13 +85,7 @@
         $nom=$_POST['nom'];
         //recherche
         for($i=0;$i<$ligne;$i++){
-            //$n=$i+1;
-            if($nom==$produit[$i][0]){
-                /*for($j=$i;$j<$ligne;$j++){
-                    for($k=0;$k<$col;$k++){
-                        $produit[$j][$k]=$produit[$j+1][$k];
-                    }
-                }*/
+            if(strcasecmp($nom,$produit[$i][0])==0){
                 array_splice($produit,$i,1);
                 $ligne--;
             }
@@ -134,6 +129,7 @@ for($i=0;$i<$ligne;$i++){
 echo '</tbody></table>';
 }
 ?>
+</div>
 </div>
     <?php include_once 'footer.php' ?>
 </body>

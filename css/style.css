@@ -1,0 +1,20 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+.fondGris{
+    background-color: grey;
+}
+.formulaire{
+    margin-top: 20vh;
+    padding: 20px;
+    background-color: rgba(75, 243, 159, 0.932);
+}
+footer{
+    color: whitesmoke;
+}
+.marge{
+    margin-top:50px;
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+}
