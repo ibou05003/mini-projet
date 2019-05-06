@@ -1,9 +1,11 @@
 body{
     margin: 0px;
     padding: 0px;
+    background-image: url(../img/caddie.jpg);
 }
 .fondGris{
-    background-color: grey;
+    /*background-color: grey;*/
+    background-image: url(../img/caddie.jpg);
 }
 .formulaire{
     margin-top: 20vh;
