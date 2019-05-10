@@ -60,6 +60,11 @@
             $qte=$_POST['quantite'];
             $prix=$_POST['prix'];
             $mtt=$qte*$prix;
+<<<<<<< HEAD
+=======
+            $ligne=10;
+            $col=4;
+>>>>>>> 457d4d8a723a24d8103a20fbce69aaa96743e611
             $t=false;
 			if(file_exists($nomfile)){
                 $f=fopen("../files/produit.csv","r");
