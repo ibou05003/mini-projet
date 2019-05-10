@@ -1,3 +1,16 @@
+<?php
+	if(empty($_SESSION))
+	{
+        session_start();
+        if(!isset($_SESSION['profil'])){
+            header("location:../index.php");
+        }
+	}
+	else
+	{
+        session_destroy();
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +26,7 @@
 <body>
     <?php include_once 'header.php' ?>
     <div class="marge">
-    <!-- Recherche de produits à partir du seuil -->
+    <!-- Recherche de produits -->
     <div class="container">
         <div class="row">
             <div class="col-12 text-center"><h1>Rechercher Produits</h1></div>
@@ -29,228 +42,188 @@
     
     
     <?php
-    //recherche
-    $produit=array(
-        array('lait',50,1000,50*1000),
-        array('savon',25,500,25*500),
-        array('sucre',9,300,300*9),
-        array('datte',45,2300,45*2300),
-        array('riz',100,9500,9500*100),
-        array('jambon',75,1500,1500*75),
-        array('merguez',50,1300,1300*50),
-        array('oeuf',19,1700,1700*19),
-        array('moutarde',50,600,600*50),
-        array('cafe',10,3000,3000*10)
-    );
-    $ligne=10;
-    $col=4;
+    $nomfile='../files/produit.csv';
+    require_once 'liste.php';
     if(empty($_POST['rechercher'])){
-        //$seuil=$_POST['seuil'];
-        //affichage
-        echo '
-            <div class="row">
-            <div class="col-12 text-center"><h4>Liste Produits</h4></div>
-            </div>
-        ';
-        echo '<table class="table table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col"> </th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Quantité</th>
-                        <th scope="col">Prix Unitaire</th>
-                        <th scope="col">Montant</th>
-                    <tr>
-                </thead>
-                <tbody>
-            ';
-        for($i=0;$i<$ligne;$i++){
-            $n=$i+1;
-            
-                if($produit[$i][1]<=10){
-                    echo '<tr class="bg-danger"><th scope="row">'.$n.'</th>';
-                    for($j=0;$j<$col;$j++){
-                        echo '<td>'.$produit[$i][$j].'</td>';
-                    }
-                }
-                else{
-                    echo '<tr><th scope="row">'.$n.'</th>';
-                    for($j=0;$j<$col;$j++){
-                        echo '<td>'.$produit[$i][$j].'</td>';
-                    }
-                }
-            
-            echo '</tr>';
+        if(file_exists($nomfile)){ 
+            afficheProduit();
         }
-        echo '</tbody></table>';
     }
     else{
         //si c'est la quantite qui est saisie et non les prix
         if(!empty($_POST['seuil']) && empty($_POST['pmin']) && empty($_POST['pmax'])){
             $seuil=$_POST['seuil'];
         //affichage
-        echo '
-            <div class="row">
-            <div class="col-12 text-center"><h4>Liste Produits</h4></div>
-            </div>
-        ';
-        echo '<table class="table table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col"> </th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Quantité</th>
-                        <th scope="col">Prix Unitaire</th>
-                        <th scope="col">Montant</th>
-                    <tr>
-                </thead>
-                <tbody>
-            ';
-        for($i=0;$i<$ligne;$i++){
-            $n=$i+1;
-            if($seuil<=$produit[$i][1]){
-                if($produit[$i][1]<=10){
-                    echo '<tr class="bg-danger"><th scope="row">'.$n.'</th>';
-                    for($j=0;$j<$col;$j++){
-                        echo '<td>'.$produit[$i][$j].'</td>';
-                    }
-                }
-                else{
-                    echo '<tr><th scope="row">'.$n.'</th>';
-                    for($j=0;$j<$col;$j++){
-                        echo '<td>'.$produit[$i][$j].'</td>';
-                    }
-                }
-            }
-            echo '</tr>';
-        }
-        echo '</tbody></table>';
+        ?>
+            <center><h1>Liste des produits</h1></center>
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead class="thead-dark">
+                                    <tr class='text-center'>
+                                        <th>#</th>
+                                        <th>Nom Produit</th>
+                                        <th>Quantité</th>
+                                        <th>Prix Unitaire</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $f=fopen("../files/produit.csv","r");
+                                        $i=1;
+                                        while($tab=fgetcsv($f,1000,";"))
+                                        {
+                                            if($seuil<=$tab[1]){
+                                                if($tab[1]<=10){
+                                                    echo "<tr class='text-center table-danger'>";
+                                                }
+                                                else{
+                                                    echo "<tr class='text-center'>";
+                                                }
+                                                echo "<td>".$i."</td>";
+                                                echo "<td>".$tab[0]."</td>";
+                                                echo "<td>".$tab[1]."</td>";
+                                                echo "<td>".$tab[2]."</td>";
+                                                echo "<td>".$tab[3]."</td>";
+                                                echo "</tr>";
+                                                $i++;
+                                            }
+                                        }
+                                        fclose($f);
+                                    ?>
+                                </tbody>
+                            </table> <?php
         }
         elseif(empty($_POST['seuil']) && !empty($_POST['pmin']) && empty($_POST['pmax'])){
             $pmin=$_POST['pmin'];
         //affichage
-        echo '
-            <div class="row">
-            <div class="col-12 text-center"><h4>Liste Produits</h4></div>
-            </div>
-        ';
-        echo '<table class="table table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col"> </th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Quantité</th>
-                        <th scope="col">Prix Unitaire</th>
-                        <th scope="col">Montant</th>
-                    <tr>
-                </thead>
-                <tbody>
-            ';
-        for($i=0;$i<$ligne;$i++){
-            $n=$i+1;
-            if($pmin<=$produit[$i][2]){
-                if($produit[$i][1]<=10){
-                    echo '<tr class="bg-danger"><th scope="row">'.$n.'</th>';
-                    for($j=0;$j<$col;$j++){
-                        echo '<td>'.$produit[$i][$j].'</td>';
-                    }
-                }
-                else{
-                    echo '<tr><th scope="row">'.$n.'</th>';
-                    for($j=0;$j<$col;$j++){
-                        echo '<td>'.$produit[$i][$j].'</td>';
-                    }
-                }
-            }
-            echo '</tr>';
-        }
-        echo '</tbody></table>';
+        ?>
+            <center><h1>Liste des produits</h1></center>
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead class="thead-dark">
+                                    <tr class='text-center'>
+                                        <th>#</th>
+                                        <th>Nom Produit</th>
+                                        <th>Quantité</th>
+                                        <th>Prix Unitaire</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $f=fopen("../files/produit.csv","r");
+                                        $i=1;
+                                        while($tab=fgetcsv($f,1000,";"))
+                                        {
+                                            if($pmin<=$tab[2]){
+                                                if($tab[1]<=10){
+                                                    echo "<tr class='text-center table-danger'>";
+                                                }
+                                                else{
+                                                    echo "<tr class='text-center'>";
+                                                }
+                                                echo "<td>".$i."</td>";
+                                                echo "<td>".$tab[0]."</td>";
+                                                echo "<td>".$tab[1]."</td>";
+                                                echo "<td>".$tab[2]."</td>";
+                                                echo "<td>".$tab[3]."</td>";
+                                                echo "</tr>";
+                                                $i++;
+                                            }
+                                        }
+                                        fclose($f);
+                                    ?>
+                                </tbody>
+                            </table> <?php
         }
         elseif(empty($_POST['seuil']) && empty($_POST['pmin']) && !empty($_POST['pmax'])){
             $pmax=$_POST['pmax'];
         //affichage
-        echo '
-            <div class="row">
-            <div class="col-12 text-center"><h4>Liste Produits</h4></div>
-            </div>
-        ';
-        echo '<table class="table table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col"> </th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Quantité</th>
-                        <th scope="col">Prix Unitaire</th>
-                        <th scope="col">Montant</th>
-                    <tr>
-                </thead>
-                <tbody>
-            ';
-        for($i=0;$i<$ligne;$i++){
-            $n=$i+1;
-            if($pmax>=$produit[$i][2]){
-                if($produit[$i][1]<=10){
-                    echo '<tr class="bg-danger"><th scope="row">'.$n.'</th>';
-                    for($j=0;$j<$col;$j++){
-                        echo '<td>'.$produit[$i][$j].'</td>';
-                    }
-                }
-                else{
-                    echo '<tr><th scope="row">'.$n.'</th>';
-                    for($j=0;$j<$col;$j++){
-                        echo '<td>'.$produit[$i][$j].'</td>';
-                    }
-                }
-            }
-            echo '</tr>';
-        }
-        echo '</tbody></table>';
+        ?>
+            <center><h1>Liste des produits</h1></center>
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead class="thead-dark">
+                                    <tr class='text-center'>
+                                        <th>#</th>
+                                        <th>Nom Produit</th>
+                                        <th>Quantité</th>
+                                        <th>Prix Unitaire</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $f=fopen("../files/produit.csv","r");
+                                        $i=1;
+                                        while($tab=fgetcsv($f,1000,";"))
+                                        {
+                                            if($pmax>=$tab[2]){
+                                                if($tab[1]<=10){
+                                                    echo "<tr class='text-center table-danger'>";
+                                                }
+                                                else{
+                                                    echo "<tr class='text-center'>";
+                                                }
+                                                echo "<td>".$i."</td>";
+                                                echo "<td>".$tab[0]."</td>";
+                                                echo "<td>".$tab[1]."</td>";
+                                                echo "<td>".$tab[2]."</td>";
+                                                echo "<td>".$tab[3]."</td>";
+                                                echo "</tr>";
+                                                $i++;
+                                            }
+                                        }
+                                        fclose($f);
+                                    ?>
+                                </tbody>
+                            </table> <?php
         }
         elseif(empty($_POST['seuil']) && !empty($_POST['pmin']) && !empty($_POST['pmax'])){
             //l'utilisateur saisi le pmin et le pmax
             $pmin=$_POST['pmin'];
             $pmax=$_POST['pmax'];
             if($pmin<$pmax){
-                //affichage
-        echo '
-        <div class="row">
-        <div class="col-12 text-center"><h4>Liste Produits</h4></div>
-        </div>
-    ';
-    echo '<table class="table table-striped table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col"> </th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Quantité</th>
-                    <th scope="col">Prix Unitaire</th>
-                    <th scope="col">Montant</th>
-                <tr>
-            </thead>
-            <tbody>
-        ';
-    for($i=0;$i<$ligne;$i++){
-        $n=$i+1;
-        if($pmin<=$produit[$i][2] && $pmax>=$produit[$i][2]){
-            if($produit[$i][1]<=10){
-                echo '<tr class="bg-danger"><th scope="row">'.$n.'</th>';
-                for($j=0;$j<$col;$j++){
-                    echo '<td>'.$produit[$i][$j].'</td>';
-                }
-            }
-            else{
-                echo '<tr><th scope="row">'.$n.'</th>';
-                for($j=0;$j<$col;$j++){
-                    echo '<td>'.$produit[$i][$j].'</td>';
-                }
-            }
-        }
-        echo '</tr>';
-    }
-    echo '</tbody></table>';
+                ?>
+            <center><h1>Liste des produits</h1></center>
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead class="thead-dark">
+                                    <tr class='text-center'>
+                                        <th>#</th>
+                                        <th>Nom Produit</th>
+                                        <th>Quantité</th>
+                                        <th>Prix Unitaire</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $f=fopen("../files/produit.csv","r");
+                                        $i=1;
+                                        while($tab=fgetcsv($f,1000,";"))
+                                        {
+                                            if($pmin<=$tab[2] && $pmax>=$tab[2]){
+                                                if($tab[1]<=10){
+                                                    echo "<tr class='text-center table-danger'>";
+                                                }
+                                                else{
+                                                    echo "<tr class='text-center'>";
+                                                }
+                                                echo "<td>".$i."</td>";
+                                                echo "<td>".$tab[0]."</td>";
+                                                echo "<td>".$tab[1]."</td>";
+                                                echo "<td>".$tab[2]."</td>";
+                                                echo "<td>".$tab[3]."</td>";
+                                                echo "</tr>";
+                                                $i++;
+                                            }
+                                        }
+                                        fclose($f);
+                                    ?>
+                                </tbody>
+                            </table> <?php
             }
             else{
                 echo 'le prix minimum ne doit pas etre  superieur au prix max';
+                afficheProduit();
             }
         }
         elseif(!empty($_POST['seuil']) && !empty($_POST['pmin']) && !empty($_POST['pmax'])){
@@ -260,135 +233,143 @@
             $pmax=$_POST['pmax'];
             if($pmin<$pmax){
                 //affichage
-        echo '
-        <div class="row">
-        <div class="col-12 text-center"><h4>Liste Produits</h4></div>
-        </div>
-    ';
-    echo '<table class="table table-striped table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col"> </th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Quantité</th>
-                    <th scope="col">Prix Unitaire</th>
-                    <th scope="col">Montant</th>
-                <tr>
-            </thead>
-            <tbody>
-        ';
-    for($i=0;$i<$ligne;$i++){
-        $n=$i+1;
-        if($seuil<=$produit[$i][1] && $pmin<=$produit[$i][2] && $pmax>=$produit[$i][2]){
-            if($produit[$i][1]<=10){
-                echo '<tr class="bg-danger"><th scope="row">'.$n.'</th>';
-                for($j=0;$j<$col;$j++){
-                    echo '<td>'.$produit[$i][$j].'</td>';
-                }
-            }
-            else{
-                echo '<tr><th scope="row">'.$n.'</th>';
-                for($j=0;$j<$col;$j++){
-                    echo '<td>'.$produit[$i][$j].'</td>';
-                }
-            }
-        }
-        echo '</tr>';
-    }
-    echo '</tbody></table>';
+                ?>
+            <center><h1>Liste des produits</h1></center>
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead class="thead-dark">
+                                    <tr class='text-center'>
+                                        <th>#</th>
+                                        <th>Nom Produit</th>
+                                        <th>Quantité</th>
+                                        <th>Prix Unitaire</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $f=fopen("../files/produit.csv","r");
+                                        $i=1;
+                                        while($tab=fgetcsv($f,1000,";"))
+                                        {
+                                            if($seuil<=$tab[1] && $pmin<=$tab[2] && $pmax>=$tab[2]){
+                                                if($tab[1]<=10){
+                                                    echo "<tr class='text-center table-danger'>";
+                                                }
+                                                else{
+                                                    echo "<tr class='text-center'>";
+                                                }
+                                                echo "<td>".$i."</td>";
+                                                echo "<td>".$tab[0]."</td>";
+                                                echo "<td>".$tab[1]."</td>";
+                                                echo "<td>".$tab[2]."</td>";
+                                                echo "<td>".$tab[3]."</td>";
+                                                echo "</tr>";
+                                                $i++;
+                                            }
+                                        }
+                                        fclose($f);
+                                    ?>
+                                </tbody>
+                            </table> <?php
             }
             else{
                 echo 'le prix minimum ne doit pas etre  superieur au prix max';
+                afficheProduit();
             }
         }
         elseif(!empty($_POST['seuil']) && !empty($_POST['pmin']) && empty($_POST['pmax'])){
-            //l'utilisateur saisi toutes les valeurs
+            //l'utilisateur saisi le seuil et pmin
             $seuil=$_POST['seuil'];
             $pmin=$_POST['pmin'];
             
                 //affichage
-        echo '
-        <div class="row">
-        <div class="col-12 text-center"><h4>Liste Produits</h4></div>
-        </div>
-    ';
-    echo '<table class="table table-striped table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col"> </th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Quantité</th>
-                    <th scope="col">Prix Unitaire</th>
-                    <th scope="col">Montant</th>
-                <tr>
-            </thead>
-            <tbody>
-        ';
-    for($i=0;$i<$ligne;$i++){
-        $n=$i+1;
-        if($seuil<=$produit[$i][1] && $pmin<=$produit[$i][2]){
-            if($produit[$i][1]<=10){
-                echo '<tr class="bg-danger"><th scope="row">'.$n.'</th>';
-                for($j=0;$j<$col;$j++){
-                    echo '<td>'.$produit[$i][$j].'</td>';
-                }
-            }
-            else{
-                echo '<tr><th scope="row">'.$n.'</th>';
-                for($j=0;$j<$col;$j++){
-                    echo '<td>'.$produit[$i][$j].'</td>';
-                }
-            }
-        }
-        echo '</tr>';
-    }
-    echo '</tbody></table>';
+                ?>
+                <center><h1>Liste des produits</h1></center>
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead class="thead-dark">
+                                        <tr class='text-center'>
+                                            <th>#</th>
+                                            <th>Nom Produit</th>
+                                            <th>Quantité</th>
+                                            <th>Prix Unitaire</th>
+                                            <th>Montant</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                            $f=fopen("../files/produit.csv","r");
+                                            $i=1;
+                                            while($tab=fgetcsv($f,1000,";"))
+                                            {
+                                                if($seuil<=$tab[1] && $pmin<=$tab[2]){
+                                                    if($tab[1]<=10){
+                                                        echo "<tr class='text-center table-danger'>";
+                                                    }
+                                                    else{
+                                                        echo "<tr class='text-center'>";
+                                                    }
+                                                    echo "<td>".$i."</td>";
+                                                    echo "<td>".$tab[0]."</td>";
+                                                    echo "<td>".$tab[1]."</td>";
+                                                    echo "<td>".$tab[2]."</td>";
+                                                    echo "<td>".$tab[3]."</td>";
+                                                    echo "</tr>";
+                                                    $i++;
+                                                }
+                                            }
+                                            fclose($f);
+                                        ?>
+                                    </tbody>
+                                </table> <?php
             
         }
         elseif(empty($_POST['seuil']) && empty($_POST['pmin']) && empty($_POST['pmax'])){
             echo 'vous n\'avez selectionné aucun critere de recherche';
+            afficheProduit();
         }
         else{
             $seuil=$_POST['seuil'];
             $pmax=$_POST['pmax'];
             
                 //affichage
-        echo '
-        <div class="row">
-        <div class="col-12 text-center"><h4>Liste Produits</h4></div>
-        </div>
-    ';
-    echo '<table class="table table-striped table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col"> </th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Quantité</th>
-                    <th scope="col">Prix Unitaire</th>
-                    <th scope="col">Montant</th>
-                <tr>
-            </thead>
-            <tbody>
-        ';
-    for($i=0;$i<$ligne;$i++){
-        $n=$i+1;
-        if($seuil<=$produit[$i][1] && $pmax>=$produit[$i][2]){
-            if($produit[$i][1]<=10){
-                echo '<tr class="bg-danger"><th scope="row">'.$n.'</th>';
-                for($j=0;$j<$col;$j++){
-                    echo '<td>'.$produit[$i][$j].'</td>';
-                }
-            }
-            else{
-                echo '<tr><th scope="row">'.$n.'</th>';
-                for($j=0;$j<$col;$j++){
-                    echo '<td>'.$produit[$i][$j].'</td>';
-                }
-            }
-        }
-        echo '</tr>';
-    }
-    echo '</tbody></table>';
+                ?>
+            <center><h1>Liste des produits</h1></center>
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead class="thead-dark">
+                                    <tr class='text-center'>
+                                        <th>#</th>
+                                        <th>Nom Produit</th>
+                                        <th>Quantité</th>
+                                        <th>Prix Unitaire</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $f=fopen("../files/produit.csv","r");
+                                        $i=1;
+                                        while($tab=fgetcsv($f,1000,";"))
+                                        {
+                                            if($seuil<=$tab[1] && $pmax>=$tab[2]){
+                                                if($tab[1]<=10){
+                                                    echo "<tr class='text-center table-danger'>";
+                                                }
+                                                else{
+                                                    echo "<tr class='text-center'>";
+                                                }
+                                                echo "<td>".$i."</td>";
+                                                echo "<td>".$tab[0]."</td>";
+                                                echo "<td>".$tab[1]."</td>";
+                                                echo "<td>".$tab[2]."</td>";
+                                                echo "<td>".$tab[3]."</td>";
+                                                echo "</tr>";
+                                                $i++;
+                                            }
+                                        }
+                                        fclose($f);
+                                    ?>
+                                </tbody>
+                            </table> <?php
         }
     }
 ?>

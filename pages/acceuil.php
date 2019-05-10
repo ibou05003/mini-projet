@@ -1,3 +1,16 @@
+<?php
+	if(empty($_SESSION))
+	{
+        session_start();
+        if(!isset($_SESSION['profil'])){
+            header("location:../index.php");
+        }
+	}
+	else
+	{
+        session_destroy();
+	}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +31,7 @@
     <div class="container-fluid">
         <div class="row">
         <div class="col-12 text-center"><h1>ACCEUIL</h1></div>
-            <div class="col-md-3 ou"><a href="../index.php"><center>DECONNEXION </center> </a></div>
+            <div class="col-md-3 ou"><a href="logout.php"><center>DECONNEXION </center> </a></div>
             <div class="col-md-3 ou"> <a href="listerProduits.php"><center>LISTER PRODUIT</center> </a></div>
             <div class="col-md-3 ou"><a href="recherchreProduits.php"><center> RECHERCHER PRODUIT </center></a></div>
         </div>
@@ -32,7 +45,18 @@
             </div>
     </div>
 
-
+    <?php 
+        if($_SESSION['profil']=="Administrateur"){?>
+            <div class="container-fluid">
+            <div class="row">
+            <div class="col-3"></div>
+            <div class="col-md-3 ou"><a href="user.php"><center>  AJOUTER USER</center></a></div>
+            <div class="col-md-3 ou"><a href="listeUsers.php"><center>  LISTE USERS</center></a></div>
+            <div class="col-3"></div>
+            </div>
+    </div><?php
+        }
+    ?>
     
     </div>
     <?php include_once 'footer.php' ?>

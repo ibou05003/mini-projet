@@ -5,6 +5,11 @@
         if(!isset($_SESSION['profil'])){
             header("location:../index.php");
         }
+        else{
+            if($_SESSION['profil']=="Utilisateur"){
+                header("location:acceuil.php");
+            }
+        }
 	}
 	else
 	{
@@ -19,7 +24,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
     <link rel="stylesheet" href="../css/style.css">
-    <title>Liste Produits</title>
+    <title>Liste Users</title>
 </head>
 <body>
 <?php include_once 'header.php' ?>
@@ -27,10 +32,10 @@
     <div class="container">
         
         <?php
-        $nomfile='../files/produit.csv';
+        $nomfile='../files/user.csv';
         require_once 'liste.php';
         if(file_exists($nomfile)){ 
-            afficheProduit();
+            afficheUser();
         }
         ?>
         

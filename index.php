@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,26 +43,51 @@
                     <button type="submit" name="connexion" class="btn btn-primary">Connexion</button>
                 </form>
                 <?php
-                $user=array(
-                    array('ibrahima','ibou05003','passer123'),
-                    array('awa','awa123','passer123'),
-                    array('malick','milk','passer123'),
-                    array('mareme','mareme','passer123'),
-                    array('diamyl','diamyl','passer123'),
-                    array('ablaye','ndoye','passer123')
-                );
-                $ligne=6;
-                $col=3;
+                
                 //extract($_POST);
                 if(isset($_POST['connexion'])){
                     $log=$_POST['login'];
                     $mdp=$_POST['password'];
                     //parcours
                     $trouve=false;
-                    for($i=0;$i<$ligne;$i++){
-                        //$n=$i+1;
-                        if($log==$user[$i][1] && $mdp==$user[$i][2]){
+                    $ok=false;
+                    $f=fopen("./files/user.csv","r");
+                    $i=0;
+                    while($tab=fgetcsv($f,1000,";"))
+                    {
+                        if($log==$tab[0] && $mdp==$tab[1]){
                             $trouve=true;
+                            if($tab[6]=="bloquer?"){
+                                $ok=true;
+                                $nb=$tab[7];
+                                $_SESSION['login']=$tab[0];
+                                $_SESSION['nom']=$tab[2];
+                                $_SESSION['profil']=$tab[5];
+                            }
+                            else
+                                echo '<h5 style="color:dark;">utilisateur bloqué, veuillez contacter l\'administrateur</h5>';
+                        }
+                    }
+                    fclose($f);
+                    if($ok==true){
+                        if($nb==0){
+                            header("location:pages/changemdp.php");
+                        }
+                        else{
+                            $f=fopen("../files/user.csv","r");
+                            while($tab=fgetcsv($f,1000,";"))
+                            {
+                                if($log==$tab[0])
+                                {
+                                    $tab[7]++;
+                                }
+                                $ch=$ch.$tab[0].";".$tab[1].";".$tab[2].";".$tab[3].";".$tab[4].";".$tab[5].";".$tab[6].";".$tab[7]."\n";
+                                
+                            }
+                            fclose($f);
+                            $f=fopen("../files/user.csv","w");
+                            fputs($f,$ch);
+                            fclose($f);
                             header("location:pages/acceuil.php");
                         }
                     }

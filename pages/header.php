@@ -21,8 +21,19 @@
       <li class="nav-item">
         <a class="nav-link" href="supprimerProduit.php">Supprimer Produit</a>
       </li>
+      <?php 
+        if($_SESSION['profil']=="Administrateur"){?>
+          <li class="nav-item">
+          <a class="nav-link" href="user.php">Ajout Utilisateur</a>
+          </li> 
+          <li class="nav-item">
+          <a class="nav-link" href="listeUsers.php">Liste Utilisateurs</a>
+          </li>
+    <?php
+        }
+    ?>
       <li class="nav-item">
-        <a class="nav-link" href="../index.php">Deconnexion</a>
+        <a class="nav-link" href="logout.php">Deconnexion</a>
       </li>
     </ul>
     

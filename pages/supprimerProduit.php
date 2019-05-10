@@ -1,3 +1,16 @@
+<?php
+	if(empty($_SESSION))
+	{
+        session_start();
+        if(!isset($_SESSION['profil'])){
+            header("location:../index.php");
+        }
+	}
+	else
+	{
+        session_destroy();
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,108 +39,43 @@
     
     
     <?php
-    //recherche
-    $produit=array(
-        array('lait',50,1000,50*1000),
-        array('savon',25,500,25*500),
-        array('sucre',9,300,300*9),
-        array('datte',45,2300,45*2300),
-        array('riz',100,9500,9500*100),
-        array('jambon',75,1500,1500*75),
-        array('merguez',50,1300,1300*50),
-        array('oeuf',19,1700,1700*19),
-        array('moutarde',50,600,600*50),
-        array('cafe',10,3000,3000*10)
-    );
-    $ligne=10;
-    $col=4;
+    $nomfile='../files/produit.csv';
+    require_once 'liste.php';
     if(empty($_POST['supprimer'])){
-        
-        //affichage
-        echo '
-            <div class="row">
-            <div class="col-12 text-center"><h4>Liste Produits</h4></div>
-            </div>
-        ';
-        echo '<table class="table table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col"> </th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Quantité</th>
-                        <th scope="col">Prix Unitaire</th>
-                        <th scope="col">Montant</th>
-                    <tr>
-                </thead>
-                <tbody>
-            ';
-        for($i=0;$i<$ligne;$i++){
-            $n=$i+1;
-            
-                if($produit[$i][1]<=10){
-                    echo '<tr class="bg-danger"><th scope="row">'.$n.'</th>';
-                    for($j=0;$j<$col;$j++){
-                        echo '<td>'.$produit[$i][$j].'</td>';
-                    }
-                }
-                else{
-                    echo '<tr><th scope="row">'.$n.'</th>';
-                    for($j=0;$j<$col;$j++){
-                        echo '<td>'.$produit[$i][$j].'</td>';
-                    }
-                }
-            
-            echo '</tr>';
+        if(file_exists($nomfile)){ 
+            afficheProduit();
         }
-        echo '</tbody></table>';
     }
     else{
         $nom=$_POST['nom'];
-        //recherche
-        for($i=0;$i<$ligne;$i++){
-            if(strcasecmp($nom,$produit[$i][0])==0){
-                array_splice($produit,$i,1);
-                $ligne--;
+            $t=false;
+            $ch="";
+			if(file_exists($nomfile)){
+                $f=fopen("../files/produit.csv","r");
+			while($tab=fgetcsv($f,1000,";"))
+			{
+				if(strcasecmp($nom,$tab[0])==0)
+				{
+                    $t=true;
+                }
+                else{
+                    $ch=$ch.$tab[0].";".$tab[1].";".$tab[2].";".$tab[3]."\n";
+                }
+			}
+			fclose($f);
             }
-    }
-    //affichage
-    echo '
-    <div class="row">
-    <div class="col-12 text-center"><h4>Liste Produits</h4></div>
-    </div>
-';
-echo '<table class="table table-striped table-hover">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col"> </th>
-                <th scope="col">Nom</th>
-                <th scope="col">Quantité</th>
-                <th scope="col">Prix Unitaire</th>
-                <th scope="col">Montant</th>
-            <tr>
-        </thead>
-        <tbody>
-    ';
-for($i=0;$i<$ligne;$i++){
-    $n=$i+1;
-    
-        if($produit[$i][1]<=10){
-            echo '<tr class="bg-danger"><th scope="row">'.$n.'</th>';
-            for($j=0;$j<$col;$j++){
-                echo '<td>'.$produit[$i][$j].'</td>';
+			if($t==true)
+			{
+				$f=fopen("../files/produit.csv","w");
+				fputs($f,$ch);
+			    fclose($f);
             }
-        }
-        else{
-            echo '<tr><th scope="row">'.$n.'</th>';
-            for($j=0;$j<$col;$j++){
-                echo '<td>'.$produit[$i][$j].'</td>';
+            else{
+                echo 'ce nom de produit n\'existe pas';
             }
-        }
-    
-    echo '</tr>';
-}
-echo '</tbody></table>';
-}
+                afficheProduit();
+	}
+
 ?>
 </div>
 </div>
